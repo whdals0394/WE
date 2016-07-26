@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeGood</string>
+    <string name="title_activity_main_button">main_button</string>
 </resources>
