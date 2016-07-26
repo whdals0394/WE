@@ -23,7 +23,9 @@ public class DiaryWork extends AppCompatActivity {
         setContentView(R.layout.activity_diary_work);
     }
     public void ok(View v) {
-
+        Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        String str_pass = it.getStringExtra("it_pass");
         EditText et_title = (EditText)findViewById(R.id.title);
         String str_title = et_title.getText().toString();
 
@@ -34,18 +36,16 @@ public class DiaryWork extends AppCompatActivity {
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("title", str_title);
-            values.put("letter", str_letter);
-            values.put("day", str_day);
-            long newRowId = sqlitedb.insert("Diary", null, values);
+            String sql = "insert into Diary values(null,'"
+                    + str_id + "','" + str_pass + "','" + /*str_picture* + "','" + */str_day + "','" + str_title + "','" + str_letter + "')";
+            sqlitedb.execSQL(sql);
             sqlitedb.close();
             dbmanager.close();
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        Intent it = new Intent(this, Main.class);
-        startActivity(it);
+        Intent it2 = new Intent(this, Main.class);
+        startActivity(it2);
         finish();
     }
 }

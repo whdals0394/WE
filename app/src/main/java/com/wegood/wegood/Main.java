@@ -16,6 +16,7 @@ public class Main extends AppCompatActivity {
     SQLiteDatabase sqlitedb;
     DBmanager dbmanager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +45,25 @@ public class Main extends AppCompatActivity {
                     final String title = cursor2.getString(cursor2.getColumnIndex("title"));
                     final String id = cursor2.getString(cursor2.getColumnIndex("id"));
                     final String picture = cursor2.getString(cursor2.getColumnIndex("picture"));
+                    final String pass = cursor2.getString(cursor2.getColumnIndex("pass"));
+                    final String letter = cursor2.getString(cursor2.getColumnIndex("letter"));
                     LinearLayout layout_list2 = new LinearLayout(this);
                     layout_list2.setOrientation(LinearLayout.HORIZONTAL);
 
                     TextView tv_list2 = new TextView(this);
                     tv_list2.setText(title);
                     tv_list2.setTextSize(15);
+                    tv_list2.setTag(String.valueOf(cursor2.getInt(0)));
                     tv_list2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent it = new Intent(this, DiaryView.class);
-                            it.putExtra("it_picture", picture);
-                            it.putExtra("it_title", title);
-                            it.putExtra("it_id", id);
-                            startActivity(it);
+                            String num = String.valueOf(v.getTag());
+                            Intent it2 = new Intent(Main.this ,DiaryView.class);
+                            it2.putExtra("it_num", num);
+                            it2.putExtra("it_picture", picture);
+                            it2.putExtra("it_title", title);
+                            it2.putExtra("it_letter", letter);
+                            startActivity(it2);
                             finish();
                         }
                     });
@@ -81,8 +87,13 @@ public class Main extends AppCompatActivity {
     }
 
     public void plus(View v) {
-        Intent it = new Intent(this, Galeray.class);
-        startActivity(it);
-        finish();
+        /*Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        String str_pass = it.getStringExtra("it_pass");
+        Intent it2 = new Intent(this, Galeray.class);
+        it2.putExtra("it_id", str_id);
+        it2.putExtra("it_pass", str_pass);
+        startActivity(it2);
+        finish();*/
     }
 }
