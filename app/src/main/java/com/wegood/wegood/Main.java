@@ -1,28 +1,37 @@
 package com.wegood.wegood;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class Main extends AppCompatActivity {
     SQLiteDatabase sqlitedb;
     DBmanager dbmanager;
-
+    final int REQ_CODE_SELECT_IMAGE = 100;
+    String str_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout layout = (LinearLayout) findViewById(R.id.view);
         Intent it = getIntent();
-        String str_id = it.getStringExtra("it_id");
+        str_id = it.getStringExtra("it_id");
+
         Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
         try {
             dbmanager = new DBmanager(this);
@@ -83,8 +92,34 @@ public class Main extends AppCompatActivity {
     }
 
     public void plus(View v) {
-        Intent it = new Intent(this, Gallery.class);
-        startActivity(it);
-        finish();
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQ_CODE_SELECT_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+
+                    String url = data.getData().toString();
+                    Intent it = new Intent(this, DiaryWork.class);
+                    it.putExtra("it_uri", url);
+                    it.putExtra("it_id", str_id);
+                    startActivity(it);
+                    finish();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 }

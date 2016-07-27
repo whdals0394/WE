@@ -20,6 +20,7 @@ public class JoinView extends AppCompatActivity {
         Intent it = getIntent();
         str_id = it.getStringExtra("it_id");
         str_pass = it.getStringExtra("it_pass");
+
     }
     public void go(View v){
         it_main = new Intent(this, Main.class);
