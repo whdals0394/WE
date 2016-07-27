@@ -5,13 +5,17 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,14 +29,15 @@ public class DiaryWork extends AppCompatActivity {
     SQLiteDatabase sqlitedb;
     DBmanager dbmanager;
     Date date = new Date();
+    String str_id;
+    String str_pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Date date = new Date();
-        date.setDate(date.getDate()+1);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_diary_work);
+        ImageView im_photo = (ImageView) findViewById(R.id.image);
         TextView tv_day = (TextView) findViewById(R.id.day);
         SimpleDateFormat CurYearFormat = new SimpleDateFormat("yyyy");
         SimpleDateFormat CurMonthFormat = new SimpleDateFormat("MM");
@@ -50,9 +55,20 @@ public class DiaryWork extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                new DatePickerDialog(DiaryWork.this, dateSetListener, stryear, strmonth, strday).show();
+                new DatePickerDialog(DiaryWork.this, dateSetListener, stryear, strmonth-1, strday).show();
             }
         });
+        Intent it = getIntent();
+        str_id = it.getStringExtra("it_id");
+        str_pass = it.getStringExtra("it_pass");
+        Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
+        Uri photoURI = Uri.parse(it.getStringExtra("it_uri"));
+        try {
+            Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+            im_photo.setImageBitmap(image_bitmap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
 
 
     }
@@ -60,14 +76,14 @@ public class DiaryWork extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             TextView tv_day = (TextView) findViewById(R.id.day);
-            String str_day = year + "년 " + monthOfYear + "월 " + dayOfMonth + "일 ";
+            String str_day = year + "년 " + (monthOfYear+1) + "월 " + dayOfMonth + "일 ";
             tv_day.setText(null);
             tv_day.append(str_day);
         }
 
     };
 
-    public void ok(View v) {
+    public void OK(View v) {
         Intent it = getIntent();
         String str_id = it.getStringExtra("it_id");
         String str_pass = it.getStringExtra("it_pass");
@@ -77,11 +93,13 @@ public class DiaryWork extends AppCompatActivity {
         EditText et_letter = (EditText) findViewById(R.id.letter);
         String str_letter = et_letter.getText().toString();
         String str_day = tv_day.getText().toString();
+        Uri photoURI = Uri.parse(it.getStringExtra("it_uri"));
+        String str_picture = photoURI.toString();
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getWritableDatabase();
             String sql = "insert into Diary values(null,'"
-                    + str_id + "','" + str_pass + "','" + /*str_picture* + "','" + */str_day + "','" + str_title + "','" + str_letter + "')";
+                    + str_id + "','" + str_pass + "','" + str_picture + "','" + str_day + "','" + str_title + "','" + str_letter + "')";
             sqlitedb.execSQL(sql);
             sqlitedb.close();
             dbmanager.close();
@@ -89,6 +107,7 @@ public class DiaryWork extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         Intent it2 = new Intent(this, Main.class);
+        it2.putExtra("it_id",str_id);
         startActivity(it2);
         finish();
     }
