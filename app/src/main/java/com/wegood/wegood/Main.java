@@ -1,11 +1,14 @@
 package com.wegood.wegood;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +27,9 @@ public class Main extends AppCompatActivity {
     DBmanager dbmanager;
     final int REQ_CODE_SELECT_IMAGE = 100;
     String str_id;
+    String d = "";
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,58 +42,61 @@ public class Main extends AppCompatActivity {
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getReadableDatabase();
-            String sql = "select * from Diary where id ='" + str_id + "'";
+            String sql = "select * from Diary where id ='" + str_id + "'Order By day DESC";
             Cursor cursor = sqlitedb.rawQuery(sql, null);
             while (cursor.moveToNext()) {
-                String day = cursor.getString(cursor.getColumnIndex("day"));
+                final String day = cursor.getString(cursor.getColumnIndex("day"));
+                final String title = cursor.getString(cursor.getColumnIndex("title"));
+                final String id = cursor.getString(cursor.getColumnIndex("id"));
+                final String picture = cursor.getString(cursor.getColumnIndex("picture"));
+                final String pass = cursor.getString(cursor.getColumnIndex("pass"));
+                final String letter = cursor.getString(cursor.getColumnIndex("letter"));
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
+                LinearLayout layout_daylist = new LinearLayout(this);
                 LinearLayout layout_list = new LinearLayout(this);
-                layout_list.setOrientation(LinearLayout.VERTICAL);
 
-                TextView tv_list = new TextView(this);
-                tv_list.setText(day);
-                tv_list.setTextSize(20);
-                layout_list.addView(tv_list);
-                layout.addView(layout_list);
-                String sql2 = "select *from Diary where day ='" + day + "'";
-                Cursor cursor2 = sqlitedb.rawQuery(sql2, null);
-                while (cursor2.moveToNext()) {
-                    final String title = cursor2.getString(cursor2.getColumnIndex("title"));
-                    final String id = cursor2.getString(cursor2.getColumnIndex("id"));
-                    final String picture = cursor2.getString(cursor2.getColumnIndex("picture"));
-                    LinearLayout layout_list2 = new LinearLayout(this);
-                    layout_list2.setOrientation(LinearLayout.HORIZONTAL);
-
-                    TextView tv_list2 = new TextView(this);
-                    tv_list2.setText(title);
-                    tv_list2.setTextSize(15);
-                    tv_list2.setOnClickListener(new View.OnClickListener() {
+                layout_daylist.setOrientation(LinearLayout.VERTICAL);
+                if (!d.equals(day)) {
+                    TextView tv_daylist = new TextView(this);
+                    tv_daylist.setText(day);
+                    tv_daylist.setTextSize(20);
+                    layout_daylist.addView(tv_daylist);
+                    d = tv_daylist.getText().toString();
+                }
+                if (title != null) {
+                    TextView tv_title = new TextView(this);
+                    tv_title.setText(title + " - " + id);
+                    tv_title.setTextSize(15);
+                    tv_title.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //Intent it = new Intent(this, DiaryView.class);
-                            // it.putExtra("it_picture", picture);
-                            //it.putExtra("it_title", title);
-                            //it.putExtra("it_id", id);
-                            //startActivity(it);
-                            //finish();
+                            Intent it = new Intent(Main.this, DiaryView.class);
+                            it.putExtra("it_picture", picture);
+                            it.putExtra("it_title", title);
+                            it.putExtra("it_id", id);
+                            it.putExtra("it_pass", pass);
+                            it.putExtra("it_letter", letter);
+                            it.putExtra("it_day", day);
+                            startActivity(it);
+                            finish();
                         }
                     });
-                    TextView tv_list3 = new TextView(this);
-                    tv_list3.setGravity(Gravity.RIGHT);
-                    layout_list2.addView(tv_list2);
-                    layout_list2.addView(tv_list3);
+                    Drawable drawable = getResources().getDrawable(R.drawable.border);
+                    layout_list.setBackground(drawable);
+                    layout_list.addView(tv_title);
+                    layout_daylist.addView(layout_list);
+                    layout.addView(layout_daylist);
 
-                    layout.addView(layout_list2);
                 }
-                cursor2.close();
-
             }
             cursor.close();
-            sqlitedb.close();
-            dbmanager.close();
+
 
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            sqlitedb.close();
+            dbmanager.close();
         }
     }
 
@@ -120,6 +129,5 @@ public class Main extends AppCompatActivity {
             }
         }
     }
-
-
 }
+
