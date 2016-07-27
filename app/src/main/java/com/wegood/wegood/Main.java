@@ -24,6 +24,7 @@ public class Main extends AppCompatActivity {
     DBmanager dbmanager;
     final int REQ_CODE_SELECT_IMAGE = 100;
     String str_id;
+    String d = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,13 @@ public class Main extends AppCompatActivity {
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
                 LinearLayout layout_list = new LinearLayout(this);
                 layout_list.setOrientation(LinearLayout.VERTICAL);
-                TextView tv_list = new TextView(this);
-
-                tv_list.setText(day);
-                tv_list.setTextSize(20);
-                layout_list.addView(tv_list);
-                layout.addView(layout_list);
-
+                if (!d.equals(day)) {
+                    TextView tv_list = new TextView(this);
+                    tv_list.setText(day);
+                    tv_list.setTextSize(20);
+                    layout_list.addView(tv_list);
+                    d = tv_list.getText().toString();
+                }
                 if (title != null) {
                     TextView tv_list2 = new TextView(this);
                     tv_list2.setText(title + " - " + id);
@@ -75,6 +76,8 @@ public class Main extends AppCompatActivity {
                         }
                     });
                     layout_list.addView(tv_list2);
+                    layout.addView(layout_list);
+
                 }
             }
             cursor.close();
