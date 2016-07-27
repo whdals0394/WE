@@ -47,6 +47,7 @@ public class Main extends AppCompatActivity {
                 final String picture = cursor.getString(cursor.getColumnIndex("picture"));
                 final String pass = cursor.getString(cursor.getColumnIndex("pass"));
                 final String letter = cursor.getString(cursor.getColumnIndex("letter"));
+                final String num = cursor.getString(cursor.getColumnIndex("num"));
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
                 LinearLayout layout_list = new LinearLayout(this);
                 layout_list.setOrientation(LinearLayout.VERTICAL);
@@ -71,6 +72,7 @@ public class Main extends AppCompatActivity {
                             it.putExtra("it_pass", pass);
                             it.putExtra("it_letter", letter);
                             it.putExtra("it_day", day);
+                            it.putExtra("it_num", num);
                             startActivity(it);
                             finish();
                         }

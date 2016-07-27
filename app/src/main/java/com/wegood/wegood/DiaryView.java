@@ -51,6 +51,25 @@ public class DiaryView extends AppCompatActivity {
         finish();
     }
     public void revise(View v) {
+        Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        String str_pass = it.getStringExtra("it_pass");
+        String str_num = it.getStringExtra("it_num");
+        String str_picture = it.getStringExtra("it_picture");
+        String str_day = it.getStringExtra("it_day");
+        String str_title = it.getStringExtra("it_title");
+        String str_letter = it.getStringExtra("it_letter");
+        Intent it2 = new Intent(this, DiaryUpdate.class);
+        it2.putExtra("it_picture", str_picture);
+        it2.putExtra("it_title", str_title);
+        it2.putExtra("it_id", str_id);
+        it2.putExtra("it_pass", str_pass);
+        it2.putExtra("it_letter", str_letter);
+        it2.putExtra("it_day", str_day);
+        it2.putExtra("it_num", str_num);
+        startActivity(it2);
+        finish();
+
 
     }
     public void delete(View v) {
@@ -58,11 +77,13 @@ public class DiaryView extends AppCompatActivity {
         sqlitedb = dbmanager.getReadableDatabase();
         Intent it = getIntent();
         String str_num = it.getStringExtra("it_num");
-        String query = "delete from customers where num="+str_num;
+        String str_id = it.getStringExtra("it_id");
+        String query = "delete from Diary where num="+str_num;
         sqlitedb.execSQL(query);
         sqlitedb.close();
         dbmanager.close();
         Intent it2 = new Intent(this, Main.class);
+        it2.putExtra("it_id", str_id);
         startActivity(it2);
         finish();
     }
