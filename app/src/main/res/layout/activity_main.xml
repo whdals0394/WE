@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="370dp"
         android:orientation="vertical">
 
         <ScrollView
@@ -40,6 +40,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:onClick="plus"
-            android:text="+" />
+            android:text="+"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
     </LinearLayout>
 </LinearLayout>
