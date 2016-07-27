@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,68 +13,114 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center"
+        android:padding="20dp"
         android:text="LOGIN"
-        android:textSize="40dp"/>
+        android:textSize="40dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="ID"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
+
         <EditText
+            android:id="@+id/id"
             android:layout_width="0dp"
+            android:layout_height="30dp"
+
             android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:id="@+id/id"/>
+            android:background="@drawable/border" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="30dp"
-        >
+        android:paddingBottom="30dp">
+
         <TextView
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:text="PASSOWRD"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
+
         <EditText
+            android:id="@+id/pass"
             android:layout_width="0dp"
+            android:layout_height="30dp"
             android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:id="@+id/pass"/>
+            android:background="@drawable/border"
+            android:inputType="textPassword" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <Button
-            android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="LOGIN"
-            android:onClick="login"/>
+            android:layout_weight="10"
+            android:gravity="right">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape"
+                android:onClick="login"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:text="LOGIN"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
-        <Button
-            android:layout_width="wrap_content"
+            android:paddingRight="10dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="JOIN"
-            android:onClick="join"/>
+            android:layout_weight="10"
+            android:gravity="left">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape"
+                android:onClick="join"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:text="JOIN"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+        >
     </LinearLayout>
 
 </LinearLayout>
