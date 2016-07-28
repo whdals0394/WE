@@ -1,11 +1,15 @@
 package com.wegood.wegood;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ public class Main extends AppCompatActivity {
     private long backPressedTime = 0;
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,7 @@ public class Main extends AppCompatActivity {
         Intent it = getIntent();
         str_id = it.getStringExtra("it_id");
 
+        Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getReadableDatabase();
@@ -49,22 +55,59 @@ public class Main extends AppCompatActivity {
                 final String picture = cursor.getString(cursor.getColumnIndex("picture"));
                 final String pass = cursor.getString(cursor.getColumnIndex("pass"));
                 final String letter = cursor.getString(cursor.getColumnIndex("letter"));
-                final String num = cursor.getString(cursor.getColumnIndex("num"));
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
-                LinearLayout layout_list = new LinearLayout(this);
-                layout_list.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout layout_daylist = new LinearLayout(this);
+                layout_daylist.setOrientation(LinearLayout.VERTICAL);
+
+                //Toast.makeText(this, picture , Toast.LENGTH_SHORT).show();
+
                 if (!d.equals(day)) {
-                    TextView tv_list = new TextView(this);
-                    tv_list.setText(day);
-                    tv_list.setTextSize(20);
-                    layout_list.addView(tv_list);
-                    d = tv_list.getText().toString();
+                    TextView tv_daylist = new TextView(this);
+                    tv_daylist.setText(day);
+                    tv_daylist.setTextSize(20);
+                    layout_daylist.addView(tv_daylist);
+                    d = tv_daylist.getText().toString();
                 }
                 if (title != null) {
-                    TextView tv_list2 = new TextView(this);
-                    tv_list2.setText(title + " - " + id);
-                    tv_list2.setTextSize(15);
-                    tv_list2.setOnClickListener(new View.OnClickListener() {
+                    LinearLayout layout_list = new LinearLayout(this);
+                    layout_list.setOrientation(LinearLayout.HORIZONTAL);
+                    layout_list.setPadding(20, 20, 20, 20);
+                    LinearLayout layout_inlist = new LinearLayout(this);
+                    layout_inlist.setOrientation(LinearLayout.VERTICAL);
+                    layout_inlist.setPadding(20, 0, 0, 0);
+
+                    TextView tv_title = new TextView(this);
+                    TextView tv_id = new TextView(this);
+                    ImageView ptimage = new ImageView(this);
+                    //ptimage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    Uri photoURI = Uri.parse(picture);
+
+                    tv_title.setText("TITLE:" + title);
+                    tv_title.setTextSize(15);
+                    tv_id.setText("ID:" + id);
+                    tv_id.setTextSize(15);
+
+                    try {
+                        Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+
+                        int height = image_bitmap.getHeight();
+                        int width = image_bitmap.getWidth();
+
+                        Bitmap resized = null;
+
+                        // while (height > 118) {
+                        resized = Bitmap.createScaledBitmap(image_bitmap, 300, 300, true);
+                        // height = resized.getHeight();
+                        // width = resized.getWidth();
+                        // }
+
+                        ptimage.setImageBitmap(resized);
+
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+
+                    layout_list.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent it = new Intent(Main.this, DiaryView.class);
@@ -74,22 +117,30 @@ public class Main extends AppCompatActivity {
                             it.putExtra("it_pass", pass);
                             it.putExtra("it_letter", letter);
                             it.putExtra("it_day", day);
-                            it.putExtra("it_num", num);
                             startActivity(it);
                             finish();
                         }
                     });
-                    layout_list.addView(tv_list2);
-                    layout.addView(layout_list);
+
+                    Drawable drawable = getResources().getDrawable(R.drawable.border);
+                    layout_list.setBackground(drawable);
+                    layout_list.addView(ptimage);
+                    layout_list.addView(layout_inlist);
+                    layout_inlist.addView(tv_title);
+                    layout_inlist.addView(tv_id);
+                    layout_daylist.addView(layout_list);
+                    layout.addView(layout_daylist);
 
                 }
             }
             cursor.close();
-            sqlitedb.close();
-            dbmanager.close();
+
 
         } catch (SQLiteException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            sqlitedb.close();
+            dbmanager.close();
         }
     }
 

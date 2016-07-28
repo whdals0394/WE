@@ -15,18 +15,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30dp"
-        android:text="HELLO WORLD!"
+        android:text="회원가입 완료"
         android:layout_margin="30dp"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="HOME"
-        android:onClick="go"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        android:onClick="go"/>
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -23,10 +24,10 @@ public class DiaryView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_view);
         Intent it = getIntent();
+        String str_picture = it.getStringExtra("it_picture");
         String str_title = it.getStringExtra("it_title");
         String str_letter = it.getStringExtra("it_letter");
         String str_day = it.getStringExtra("it_day");
-        String str_picture = it.getStringExtra("it_picture");
 
 
         TextView tv_title = (TextView) findViewById(R.id.title);
