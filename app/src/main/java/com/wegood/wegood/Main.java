@@ -25,6 +25,9 @@ public class Main extends AppCompatActivity {
     final int REQ_CODE_SELECT_IMAGE = 100;
     String str_id;
     String d = "";
+    private final long FINSH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,6 @@ public class Main extends AppCompatActivity {
         Intent it = getIntent();
         str_id = it.getStringExtra("it_id");
 
-        Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getReadableDatabase();
@@ -120,4 +122,19 @@ public class Main extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "'뒤로'버튼을한번더누르시면종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

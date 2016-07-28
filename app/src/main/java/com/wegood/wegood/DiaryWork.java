@@ -61,14 +61,13 @@ public class DiaryWork extends AppCompatActivity {
         Intent it = getIntent();
         str_id = it.getStringExtra("it_id");
         str_pass = it.getStringExtra("it_pass");
-        Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
-        /*Uri photoURI = Uri.parse(it.getStringExtra("it_uri"));
+        Uri photoURI = Uri.parse(it.getStringExtra("it_uri"));
         try {
             Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
             im_photo.setImageBitmap(image_bitmap);
         } catch (Exception e) {
             e.getStackTrace();
-        }*/
+        }
 
 
     }
@@ -116,5 +115,5 @@ public class DiaryWork extends AppCompatActivity {
         it2.putExtra("it_id", str_id);
         startActivity(it2);
         finish();
-    }
+}
 }

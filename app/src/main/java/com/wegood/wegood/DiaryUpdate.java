@@ -76,10 +76,11 @@ public class DiaryUpdate extends AppCompatActivity {
         EditText et_letter = (EditText) findViewById(R.id.letter);
         String str_letter = et_letter.getText().toString();
         String str_day = tv_day.getText().toString();
+        String str_num = it.getStringExtra("it_num");
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getWritableDatabase();
-            String sql = "update ";
+            String sql = "update Diary set title = '" + str_title + "', letter = '" + str_letter + "', day = '" + str_day+ "' where num ='" + str_num + "'";
             sqlitedb.execSQL(sql);
             sqlitedb.close();
             dbmanager.close();
