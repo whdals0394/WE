@@ -31,17 +31,17 @@ public class DiaryView extends AppCompatActivity {
         TextView tv_title = (TextView) findViewById(R.id.title);
         TextView tv_letter = (TextView) findViewById(R.id.letter);
         TextView tv_day = (TextView) findViewById(R.id.day);
-        /*ImageView lv_picture = (ImageView)findViewById(R.id.image);
-        Uri photoURI = Uri.parse(it.getStringExtra("it_picture"));*/
+        ImageView lv_picture = (ImageView)findViewById(R.id.image);
+        Uri photoURI = Uri.parse(str_picture);
         tv_title.append(str_title);
         tv_letter.append(str_letter);
         tv_day.append(str_day);
-        /*try {
+        try {
             Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
             lv_picture.setImageBitmap(image_bitmap);
         } catch (Exception e) {
             e.getStackTrace();
-        }*/
+        }
     }
 
     public void home(View v) {

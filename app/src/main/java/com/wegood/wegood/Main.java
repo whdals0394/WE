@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class Main extends AppCompatActivity {
     String str_id;
     String d = "";
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +54,10 @@ public class Main extends AppCompatActivity {
                 final String letter = cursor.getString(cursor.getColumnIndex("letter"));
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
                 LinearLayout layout_daylist = new LinearLayout(this);
-                LinearLayout layout_list = new LinearLayout(this);
-
                 layout_daylist.setOrientation(LinearLayout.VERTICAL);
+
+                //Toast.makeText(this, picture , Toast.LENGTH_SHORT).show();
+
                 if (!d.equals(day)) {
                     TextView tv_daylist = new TextView(this);
                     tv_daylist.setText(day);
@@ -64,10 +66,45 @@ public class Main extends AppCompatActivity {
                     d = tv_daylist.getText().toString();
                 }
                 if (title != null) {
+                    LinearLayout layout_list = new LinearLayout(this);
+                    layout_list.setOrientation(LinearLayout.HORIZONTAL);
+                    layout_list.setPadding(20,20,20,20);
+                    LinearLayout layout_inlist = new LinearLayout(this);
+                    layout_inlist.setOrientation(LinearLayout.VERTICAL);
+                    layout_inlist.setPadding(20,0,0,0);
+
                     TextView tv_title = new TextView(this);
-                    tv_title.setText(title + " - " + id);
+                    TextView tv_id = new TextView(this);
+                    ImageView ptimage = new ImageView(this);
+                    //ptimage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    Uri photoURI = Uri.parse(picture);
+
+                    tv_title.setText("TITLE:"+title);
                     tv_title.setTextSize(15);
-                    tv_title.setOnClickListener(new View.OnClickListener() {
+                    tv_id.setText("ID:"+id);
+                    tv_id.setTextSize(15);
+
+                    try {
+                        Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+
+                        int height = image_bitmap .getHeight();
+                        int width = image_bitmap .getWidth();
+
+                        Bitmap resized = null;
+
+                       // while (height > 118) {
+                            resized = Bitmap.createScaledBitmap(image_bitmap, 300 , 300, true);
+                           // height = resized.getHeight();
+                           // width = resized.getWidth();
+                       // }
+
+                        ptimage.setImageBitmap(resized );
+
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+
+                    layout_list.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent it = new Intent(Main.this, DiaryView.class);
@@ -81,9 +118,13 @@ public class Main extends AppCompatActivity {
                             finish();
                         }
                     });
+
                     Drawable drawable = getResources().getDrawable(R.drawable.border);
                     layout_list.setBackground(drawable);
-                    layout_list.addView(tv_title);
+                    layout_list.addView(ptimage);
+                    layout_list.addView(layout_inlist);
+                    layout_inlist.addView(tv_title);
+                    layout_inlist.addView(tv_id);
                     layout_daylist.addView(layout_list);
                     layout.addView(layout_daylist);
 
