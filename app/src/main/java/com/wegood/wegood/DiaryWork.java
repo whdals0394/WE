@@ -76,7 +76,7 @@ public class DiaryWork extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             String st_year = Integer.toString(year);
-            String st_month = String.format("%02d", (monthOfYear+1));
+            String st_month = String.format("%02d", (monthOfYear + 1));
             String st_day = Integer.toString(dayOfMonth);
 
 
@@ -115,5 +115,15 @@ public class DiaryWork extends AppCompatActivity {
         it2.putExtra("it_id", str_id);
         startActivity(it2);
         finish();
-}
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        Intent it2 = new Intent(this, Main.class);
+        it2.putExtra("it_id", str_id);
+        startActivity(it2);
+        finish();
+    }
 }

@@ -92,4 +92,13 @@ public class DiaryUpdate extends AppCompatActivity {
         startActivity(it2);
         finish();
     }
+    @Override
+    public void onBackPressed() {
+        Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        Intent it2 = new Intent(this, Main.class);
+        it2.putExtra("it_id", str_id);
+        startActivity(it2);
+        finish();
+    }
 }

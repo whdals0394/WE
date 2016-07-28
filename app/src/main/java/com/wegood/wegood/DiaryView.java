@@ -44,14 +44,6 @@ public class DiaryView extends AppCompatActivity {
             e.getStackTrace();
         }
     }
-    public void home(View v) {
-        Intent it = getIntent();
-        String str_id = it.getStringExtra("it_id");
-        Intent it2 = new Intent(this, Main.class);
-        it2.putExtra("it_id", str_id);
-        startActivity(it2);
-        finish();
-    }
     public void revise(View v) {
         Intent it = getIntent();
         String str_id = it.getStringExtra("it_id");
@@ -99,5 +91,14 @@ public class DiaryView extends AppCompatActivity {
         });
         alert.show();
 
+    }
+    @Override
+    public void onBackPressed() {
+        Intent it = getIntent();
+        String str_id = it.getStringExtra("it_id");
+        Intent it2 = new Intent(this, Main.class);
+        it2.putExtra("it_id", str_id);
+        startActivity(it2);
+        finish();
     }
 }
