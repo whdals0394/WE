@@ -32,8 +32,7 @@ public class Main extends AppCompatActivity {
     private final long FINSH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +40,6 @@ public class Main extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.view);
         Intent it = getIntent();
         str_id = it.getStringExtra("it_id");
-
-        Toast.makeText(this, str_id, Toast.LENGTH_LONG).show();
         try {
             dbmanager = new DBmanager(this);
             sqlitedb = dbmanager.getReadableDatabase();
@@ -55,6 +52,7 @@ public class Main extends AppCompatActivity {
                 final String picture = cursor.getString(cursor.getColumnIndex("picture"));
                 final String pass = cursor.getString(cursor.getColumnIndex("pass"));
                 final String letter = cursor.getString(cursor.getColumnIndex("letter"));
+                final String num = cursor.getString(cursor.getColumnIndex("num"));
                 // Toast.makeText(this,day,Toast.LENGTH_LONG).show();
                 LinearLayout layout_daylist = new LinearLayout(this);
                 layout_daylist.setOrientation(LinearLayout.VERTICAL);
@@ -71,10 +69,10 @@ public class Main extends AppCompatActivity {
                 if (title != null) {
                     LinearLayout layout_list = new LinearLayout(this);
                     layout_list.setOrientation(LinearLayout.HORIZONTAL);
-                    layout_list.setPadding(20, 20, 20, 20);
+                    layout_list.setPadding(20,20,20,20);
                     LinearLayout layout_inlist = new LinearLayout(this);
                     layout_inlist.setOrientation(LinearLayout.VERTICAL);
-                    layout_inlist.setPadding(20, 0, 0, 0);
+                    layout_inlist.setPadding(20,0,0,0);
 
                     TextView tv_title = new TextView(this);
                     TextView tv_id = new TextView(this);
@@ -82,26 +80,26 @@ public class Main extends AppCompatActivity {
                     //ptimage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     Uri photoURI = Uri.parse(picture);
 
-                    tv_title.setText("TITLE:" + title);
+                    tv_title.setText("TITLE:"+title);
                     tv_title.setTextSize(15);
-                    tv_id.setText("ID:" + id);
+                    tv_id.setText("ID:"+id);
                     tv_id.setTextSize(15);
 
                     try {
                         Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
 
-                        int height = image_bitmap.getHeight();
-                        int width = image_bitmap.getWidth();
+                        int height = image_bitmap .getHeight();
+                        int width = image_bitmap .getWidth();
 
                         Bitmap resized = null;
 
                         // while (height > 118) {
-                        resized = Bitmap.createScaledBitmap(image_bitmap, 300, 300, true);
+                        resized = Bitmap.createScaledBitmap(image_bitmap, 200 , 200, true);
                         // height = resized.getHeight();
                         // width = resized.getWidth();
                         // }
 
-                        ptimage.setImageBitmap(resized);
+                        ptimage.setImageBitmap(resized );
 
                     } catch (Exception e) {
                         e.getStackTrace();
@@ -117,6 +115,7 @@ public class Main extends AppCompatActivity {
                             it.putExtra("it_pass", pass);
                             it.putExtra("it_letter", letter);
                             it.putExtra("it_day", day);
+                            it.putExtra("it_num",num);
                             startActivity(it);
                             finish();
                         }
@@ -173,8 +172,6 @@ public class Main extends AppCompatActivity {
             }
         }
     }
-
-    @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
@@ -186,6 +183,5 @@ public class Main extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "'뒤로'버튼을한번더누르시면종료됩니다.", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }
+
